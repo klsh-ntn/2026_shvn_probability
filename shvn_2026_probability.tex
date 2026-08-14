@@ -1,0 +1,388 @@
+% arara: xelatex
+\documentclass[12pt]{article}
+
+% \usepackage{physics}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\usepackage{verse}
+
+\usepackage{tikzducks}
+
+\usepackage{tikz} % картинки в tikz
+\usetikzlibrary{shapes, arrows, positioning}
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering}
+
+\usepackage{amsmath, amsfonts, amssymb} % куча стандартных математических плюшек
+
+\usepackage{comment}
+
+\usepackage[top=2cm, left=1.2cm, right=1.2cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption}
+
+\usepackage{url} % to use \url{link to web}
+
+\usepackage{framed} % для рамок и черты слева от минитеории, \leftbar
+
+\newcommand{\smallduck}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}}
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{ШВН-2026}
+\chead{}
+\rhead{Теория невероятностей}
+\lfoot{}
+\cfoot{}
+%\rfoot{\begin{tikzpicture}[scale=0.4]
+%    \duck[hockey=brown!70!black, 
+%    crazyhair=red]
+%\end{tikzpicture}}
+
+\rfoot{\shuffleducks
+    \begin{tikzpicture}[scale=0.4] 
+        \duck[umbrella=cyan, 
+        speech={\thepage},
+        bubblecolour=cyan!20!white,
+        laughing
+        ],  
+    \end{tikzpicture}} 
+
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{tcolorbox} % рамочки!
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos - печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации:
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+\setcounter{MaxMatrixCols}{20}
+% by crazy default pmatrix supports only 10 cols :)
+
+
+\usepackage{fontspec}
+\usepackage{libertine}
+\usepackage{polyglossia}
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+% download "Linux Libertine" fonts:
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+% \setmainfont{Linux Libertine O} % or Helvetica, Arial, Cambria
+% why do we need \newfontfamily:
+% http://tex.stackexchange.com/questions/91507/
+% \newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+% \setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*}
+
+%% эконометрические сокращения
+\DeclareMathOperator{\Cov}{\mathbb{C}ov}
+\DeclareMathOperator{\Corr}{\mathbb{C}orr}
+\DeclareMathOperator{\Var}{\mathbb{V}ar}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\row}{row}
+
+\let\P\relax
+\DeclareMathOperator{\P}{\mathbb{P}}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+% \DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\mgf}{mgf}
+
+\DeclareMathOperator{\Convex}{Convex}
+\DeclareMathOperator{\plim}{plim}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\scalp}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cF}{\mathcal{F}}
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\hb}{\hat{\beta}}
+\newcommand{\dPois}{\mathrm{Pois}}
+
+
+
+\newcommand{\addtag}[1]{\index{#1}}
+
+\begin{document}
+
+
+\begin{verse}
+    \begin{flushright}
+        — Что мы знаем о лисе? \\
+        — Ничего. И то не все. \\
+
+        Борис Заходер
+    \end{flushright}
+\end{verse}
+
+\section{Встреча первая}
+
+\begin{leftbar}
+Константы обозначаем строчными английскими буквами: $a$, $x$, События ­— заглавными английскими буквами начала алфавита $A$, $B$, $C$, $D$, \ldots{ } Вероятность события — $\P(A)$.
+Случайные величины обозначаем заглавными английскими буквы второй половины и конца алфавита: $X$, $Y$, $W$, $Z$, \ldots{ } Математическое ожидание (среднее значение) — $\E(X)$. 
+\end{leftbar}
+
+\begin{enumerate}
+    \item Джон Конвей \raisebox{-3pt}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}} подбрасывает правильную монетку до выпадения трёх орлов подряд. 
+
+    Обозначим с помощью $X$ число потребовавшихся бросков. 
+
+    \begin{enumerate}
+        \item Найдите вероятность $\P(X = 3)$, $\P(X = 4)$.
+        \item Найдите математическое ожидание $\E(X)$.
+    \end{enumerate}
+
+\item Маша и Даша по очереди подбрасывают кубик\addtag{кубик}.
+Посуду будет мыть тот, кто первым выбросит шестерку.
+Маша бросает кубик первой.
+
+\begin{enumerate}
+\item Какова вероятность того, что посуду будет мыть Маша?
+\item Сколько в среднем раз они будут бросать кубик\addtag{кубик}?
+\item Сколько в среднем конфет съест Даша, если за каждую единичку, выброшенную Машей, Даша будет съедать одну конфету, а за двойку — две?
+\end{enumerate}
+
+
+\item Маша и Даша играют в следующую игру. 
+ Правильный кубик подкидывают неограниченное число раз.
+ Если на кубике\addtag{кубик} выпадает $1$, то казино добавляет в шляпу один рубль и игра продолжается.
+ Если на кубике выпадает $2$, то казино увеличивает сумму в шляпе в два раза и игра продолжается. 
+ Если на кубике выпадает $3$, то казино выплачивает Маше $3$ рубля и игра продолжается. 
+ Если на кубике выпадает $4$, то казино выплачивает Даше $4$ рубля и игра продолжается. 
+ Если на кубике выпадает $5$, то сумма в шляпе сгорает и игра продолжается.
+ Если на кубике выпадает $6$, то Маша и Даша получают сумму в шляпе, делят её поровну и игра оканчивается.
+Изначально на столе стоит пустая шляпа.
+ \begin{enumerate}
+\item Какова ожидаемая продолжительность игры?
+\item Чему равен ожидаемый выигрыш Маши и ожидаемый выигрыш Даши?
+\item Чему равны ожидаемые расходы организаторов игры?
+\item Чему равен ожидаемый выигрыш Маши, если изначально в шляпе лежит $100$ рублей?
+\end{enumerate}
+
+\item Илье Муромцу\addtag{герои!Илья Муромец} предстоит дорога к камню. 
+От камня начинаются ещё три дороги.
+Каждая из тех дорог снова оканчивается камнем. 
+И от каждого камня начинаются ещё три дороги.
+И каждые те три дороги оканчиваются камнем\ldots{ } 
+И так далее до бесконечности.
+На каждой дороге живёт трёхголовый Змей Горыныч\addtag{герои!Змей Горыныч}.
+Каждый Змей Горыныч бодрствует независимо от других с вероятностью (хм, Вы не поверите!) одна третья.
+%У Василисы Премудрой\addtag{герои!Василиса Премудрая} существует Чудо-Карта, на которой видно,
+% какие Змеи Горынычи бодрствуют\addtag{герои!Змей Горыныч}, а какие — нет.
+
+\begin{enumerate}
+\item Какова вероятность того, что Илья Муромец будет постоянно идти мимо спящих Горынычей, если будет выбирать каждый ход случайно?
+\item Какова вероятность того,
+что Василиса Премудрая\addtag{герои!Василиса Премудрая}, знающая состояние всех Горынычей, 
+сможет указать Ильи Муромцу бесконечный жизненный путь проходящий исключительно мимо спящих Горынычей?
+\end{enumerate}
+
+\item Маша и Даша подкидывают одну правильную монетку. 
+Маша выигрывает, как только выпадет последовательность $HTH$, Даша — как только выпадет последовательность $HHT$.
+Игра заканчивается, как только выпадает одна из этих последовательностей. 
+
+\begin{enumerate}
+    \item Какова вероятность того, что игра длится вечно?
+    \item Сколько в среднем длится одна игра?
+    \item Какова вероятность того, что выиграет Маша?
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+\section{Встреча вторая}
+
+\begin{enumerate}
+    \item Эдвард «Чёрная борода» \raisebox{-3pt}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}} подбрасывает правильную монетку до выпадения трёх орлов \emph{не обязательно подряд}. 
+
+    Обозначим с помощью $Y$ число потребовавшихся бросков. 
+
+    \begin{enumerate}
+        \item Найдите вероятность $\P(Y = 3)$, $\P(Y = 4)$.
+        \item Найдите математическое ожидание $\E(Y)$.
+    \end{enumerate}
+
+    \item Джек Воробей \raisebox{-3pt}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}} подбрасывает правильную монетку до выпадения трёх орлов подряд. 
+    
+    Однако на $3$-м, $6$-м, $9$-м и так далее бросках Джека отвлекает попугай, и Джек не может остановиться в эти моменты времени.
+    Например, на последовательности $THTHHHH$ остановка произойдёт после $7$-го броска. 
+
+    Сколько бросков в среднем пройдёт пока Джек заметит трёх выпавшех орлов?
+
+    \item Джон Сильвер  \raisebox{-3pt}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}} приходит в таверну «Огненная зебра» и заказывает сразу три пинты эля. 
+    Хитрый бармен «Огненной зебры» разбавляет каждую пинту эля с вероятностью $0.5$. 
+    Если больше половины из выпитых пинт эля разбавлены, то Джон разносит таверну к чертям собачьим. 
+    Если меньше, то Джон заказывает очередную пинту эля. 
+    Из-за пагубного пристрастия к алкоголю у Джона проблемы с памятью и он помнит только последние три пинты. 
+
+    Сколько в среднем эля выпьет Джон Сильвер пока не разнесёт таверну?
+
+    \item Сэр Генри Морган \raisebox{-3pt}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}} подбрасывает монетку\addtag{монетка} 
+ неограниченной количество раз до тех пор, пока число орлов не окажется равным числу решек (не считая начала игры).
+    Монетка\addtag{монетка} выпадает орлом с вероятностью $p$.
+
+    \begin{enumerate}
+        \item Какова вероятность того, что сэр Генри Морган будет подбрасывать монетку вечно?
+        \item Сколько в среднем бросков пройдёт до окончания игры?
+    \end{enumerate}
+
+    \item Бартоломью Робертс \raisebox{-3pt}{\begin{tikzpicture}[scale=0.3]
+    \duck[
+        cape=black,
+        hat=black,
+        mask=black
+    ]
+    \end{tikzpicture}} подбрасывает монетку\addtag{монетка} 
+ неограниченной количество раз до тех пор, пока число орлов не окажется в два раза больше числа решек (не считая начала игры).
+    Монетка\addtag{монетка} выпадает орлом с вероятностью $p$.
+
+    \begin{enumerate}
+        \item Какова вероятность того, что Бартоломью будет подбрасывать монетку вечно?
+        \item Сколько в среднем бросков пройдёт до окончания игры?
+    \end{enumerate}
+
+\end{enumerate}
+
+\newpage
+\section{Встреча третья}
+\begin{enumerate}
+    \item Леонардо Пизанский выращивает кроликов. 
+    Изначально у него одна юная пара кроликов $F_1$.
+    Юная пара кроликов становится взрослой за один месяц. 
+    Каждая взрослая пара кроликов приносит новую юную пару кроликов каждый месяц. 
+    \begin{enumerate}
+        \item Сколько пар будет у Леонардо в ближайшие месяцы? Найдите $F_2$, $F_3$, $F_4$, $F_5$.
+        \item Нарисуйте граф для слов-родословных кроликов Леонардо. 
+        \item Найдите общую формулу для $F_n$.
+    \end{enumerate}
+    
+    \item Пуанкаре подбрасывает монетку до выпадения последовательности $HTH$.
+
+\begin{enumerate}[label=\alph*)]
+    \item Нарисуйте граф для этой игры. 
+    \item Выпиши систему уравнений на слова-траектории от старта до заданной точки. 
+    \item Выпиши систему уравнений на слова-траектории от заданной точки до финиша. 
+    \item Выпиши систему уравнений на слова-траектории от заданной точки и недошедшие до финиша. 
+    \item Объясните, как превратить слова-траетории в осмысленные вероятности или средние значения.
+\end{enumerate}
+
+\item Маша и Даша подкидывают одну правильную монетку. 
+Маша выигрывает, как только выпадет последовательность $HHH$, Даша — как только выпадет последовательность $HTH$.
+Игра заканчивается, как только выпадает одна из этих последовательностей. 
+
+\begin{enumerate}[label=\alph*)]
+    \item Нарисуйте граф для этой игры. 
+    \item Выпиши систему уравнений на слова-траектории от старта до заданной точки. 
+    \item Выпиши систему уравнений на слова-траектории от заданной точки до финиша в $HHH$. 
+    \item Выпиши систему уравнений на слова-траектории от заданной точки до финиша в $HTH$. 
+    \item Выпиши систему уравнений на слова-траектории от заданной точки и недошедшие до финиша. 
+    \item Сколько в среднем времени длится игра?
+    \item Какова вероятность того, что выиграет Маша?
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+\newpage
+\section{Встреча четвёртая}
+\begin{enumerate}
+\item Эльчалан Моссель подкидывает кубик до первой шестёрки. 
+\begin{enumerate}
+    \item Сколько в среднем бросков ему потребуется?
+    \item Сколько в среднем бросков ему потребовалось, если ни разу не выпала нечётная грань?
+    \item Сколько в среднем бросков ему потребовалось, если нечётная грань выпала $Y$ раз?
+\end{enumerate}
+
+\item Альберт Ширяев подкидывает кубик до первой шестёрки. 
+За каждый бросок казино платит Альберту один рубль. 
+Однако, если нечётная грань выпадет хотя бы один раз, то Альберт не получает ничего. 
+\begin{enumerate}
+    \item Какова вероятность того, что Альберт получит положительный выигрыш?
+    \item Сколько в среднем денег заработает Альберт?
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
+
